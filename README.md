@@ -12,6 +12,6 @@ This repository contains solutions to **Object-Oriented Programming Lab 7** task
 Navigate into the folder for the question you want to run, then compile with g++:
 
 ```bash
-cd Q4_DoctorPatient
+cd DoctorPatient
 g++ main.cpp docter_patient.cpp -o doctor_patient
 ./doctor_patient
