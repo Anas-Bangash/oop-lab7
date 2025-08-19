@@ -47,6 +47,21 @@ Patient** Docter::getPatients()
 {
     return patients; 
 }
+void Docter::DeletePatient(string patName) 
+{
+    for (int i = 0; i < patientCount; ++i) 
+    {
+        if (patients[i]->getName() == patName) 
+        {
+            for (int j = (patientCount - 1); j <i ; j--) 
+            {
+                patients[j] = patients[j + 1]; // Shift patients to the left
+            }
+            patients[--patientCount] = nullptr; // Decrease count and nullify last pointer
+            return;
+        }
+    }
+}
 Patient::Patient() : name(""), docterCount(0) 
 {
     for (int i = 0; i < 5; ++i) 
@@ -88,4 +103,18 @@ int Patient::getDocterCount()
 {
     return docterCount;
 }
-
+void Patient::DeleteDocter(string docName) 
+{
+    for (int i = 0; i < docterCount; ++i) 
+    {
+        if (docters[i]->getname() == docName) 
+        {
+            for (int j = (docterCount - 1); j > i; j--) 
+            {
+                docters[j] = docters[j + 1]; // Shift docters to the left
+            }
+            docters[--docterCount] = nullptr; // Decrease count and nullify last pointer
+            return;
+        }
+    }
+}

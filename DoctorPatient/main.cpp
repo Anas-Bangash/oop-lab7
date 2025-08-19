@@ -14,7 +14,7 @@ int main()
     int patientCount = 0, docterCount = 0;
     do
     {
-        cout<<"Menu: \n1. Add Docter\n2. Add Patient\n3. Assign Patient to Docter\n4. Check if Docter has a Patient\n5. Exit\n";
+        cout<<"Menu: \n1. Add Docter\n2. Add Patient\n3. Assign Patient to Docter\n4. Check if Docter has a Patient\n5.Delete Patient\n6.Delete Doctor\n7. Exit\n";
         cin >> choice;
         cin.ignore(); // Clear the newline character from the input buffer
         switch (choice) 
@@ -34,7 +34,7 @@ int main()
                     cin >> addMore;
                     cin.ignore(); 
                     docterCount++;                   
-                }while (addMore == 'y' || addMore == 'Y'&& docterCount< 20);
+                }while ((addMore == 'y' || addMore == 'Y') && docterCount< 20);
                 break;
             }
             case 2:
@@ -61,7 +61,7 @@ int main()
                 do
                 {
                     string docName, patName;
-                    bool docfound = false, patfount=false,dpCount=false;
+                    bool docfound = false, patfound = false, dpCount = false;
                     cout << "Assigning Patient to Docter..." << endl;
                     cout << "Enter Docter Name: ";
                     getline(cin, docName);
@@ -140,8 +140,70 @@ int main()
                     cout << "Docter has no patients." << endl;
                 }
                 break;
-            }      
+            }  
             case 5:
+            {
+                string patName;
+                bool found = false;
+                cout << "Deleting Patient..." << endl;
+                cout << "Enter Patient Name: ";
+                getline(cin, patName);
+                for(int i = 0; i < patientCount; ++i) 
+                {
+                    if(patient[i].getName() == patName) 
+                    {
+                        found = true;
+                        for(int j = i; j < (patientCount-1); j++) 
+                        {
+                            patient[j] = patient[j + 1]; // Shift patients to the left
+                        }
+                        patientCount--;
+                        for(int k = 0; k < docterCount; ++k) 
+                        {
+                            docter[k].DeletePatient(patName); // Remove patient from all docters
+                        }
+                        cout << "Patient deleted successfully!" << endl;
+                        break;
+                    }
+                }
+                if(!found) 
+                {
+                    cout << "Patient not found!" << endl;
+                }
+                break;
+            }    
+            case 6:
+            {
+                string docName;
+                bool found = false;
+                cout << "Deleting Docter..." << endl;
+                cout << "Enter Docter Name: ";
+                getline(cin, docName);
+                for(int i = 0; i < docterCount; ++i) 
+                {
+                    if(docter[i].getname() == docName) 
+                    {
+                        found = true;
+                        for(int j = i; j < docterCount-1; j++) 
+                        {
+                            docter[j] = docter[j + 1]; // Shift docters to the left
+                        }
+                        docterCount--;
+                        for(int k = 0; k < patientCount; ++k) 
+                        {
+                            patient[k].DeleteDocter(docName); // Remove docter from all patients
+                        }
+                        cout << "Docter deleted successfully!" << endl;
+                        break;
+                    }
+                }
+                if(!found) 
+                {
+                    cout << "Docter not found!" << endl;
+                }
+                break;
+            }
+            case 7:
             {
                 cout << "Exiting..." << endl;
                 break;
@@ -153,7 +215,7 @@ int main()
             }
         }
 
-    } while (choice != 5);
+    } while (choice != 7);
 
     delete[] docter;
     delete[] patient;

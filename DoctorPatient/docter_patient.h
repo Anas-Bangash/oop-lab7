@@ -21,6 +21,7 @@ class Docter
     bool hasPatient(string search);
     int getPatientCount();
     Patient** getPatients();
+    void DeletePatient(string patName);
 };
 
 class Patient
@@ -36,7 +37,7 @@ class Patient
     void addDocter(Docter* d);
     bool hasDocter(string search);
     int getDocterCount();
-
+    void DeleteDocter(string docName);
 };
 
 #endif
