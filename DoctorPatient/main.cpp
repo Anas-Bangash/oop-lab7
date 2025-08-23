@@ -1,8 +1,12 @@
 #include "docter_patient.h"
 #include <iostream>
 #include <string>
+#include <fstream>
+#include "json.hpp" 
+
 
 using namespace std;
+using json = nlohmann::json; // Assuming you are using a JSON library like nlohmann/json
 
 int main()
 {
@@ -14,46 +18,65 @@ int main()
     int patientCount = 0, docterCount = 0;
     do
     {
-        cout<<"Menu: \n1. Add Docter\n2. Add Patient\n3. Assign Patient to Docter\n4. Check if Docter has a Patient\n5.Delete Patient\n6.Delete Doctor\n7. Exit\n";
+        cout<<"Menu: \n1.Load and add Data \n2. Assign Patient to Docter\n3. Check if Docter has a Patient"
+        <<"\n4.Delete Patient\n5.Delete Doctor\n6.Save and Exit\nEnter your choice: ";
         cin >> choice;
         cin.ignore(); // Clear the newline character from the input buffer
         switch (choice) 
         {
             case 1:
-            { 
-                cout << "Adding Docter..." << endl;
-                string docName;
-                char addMore;
-                do 
-                {
-                    cout << "Enter Docter Name: ";
-                    getline(cin, docName);
-                    docter[docterCount].setName(docName);
-                    cout << "Docter added successfully!" << endl;
-                    cout << "Do you want to add another Docter? (y/n): ";
-                    cin >> addMore;
-                    cin.ignore(); 
-                    docterCount++;                   
-                }while ((addMore == 'y' || addMore == 'Y') && docterCount< 20);
-                break;
-            }
-            case 2:
             {
-                string patName;
-                char addMore;
-                do 
+                int ch1;
+                loadData(patient, docter);
+                cout<<"Data loaded successfully!"<<endl;
+                cout<<"Menu:\n1.Add doctors.\n2.Add Patients"<<endl;
+                cout<<"Enter your choice: ";
+                cin >> ch1;
+                switch (ch1)
+                {
+                case 1:
+                {
+                    cout << "Adding Docter..." << endl;
+                    string docName;
+                    char addMor='y';
+                    while ((addMore == 'y' || addMore == 'Y') && docterCount< 20)
+                    {
+                        cout << "Enter Docter Name: ";
+                        getline(cin, docName);
+                        docter[docterCount].setName(docName);
+                        cout << "Docter added successfully!" << endl;
+                        cout << "Do you want to add another Docter? (y/n): ";
+                        cin >> addMore;
+                        cin.ignore(); 
+                        docterCount++;                   
+                    }
+                    break;
+                }
+                case 2:
                 {
                     cout << "Adding Patient..." << endl;
-                    cout << "Enter Patient Name: ";
-                    getline(cin, patName);
-                    patient[patientCount].setName(patName);
-                    cout << "Patient added successfully!" << endl;
-                    cout << "Do you want to add another Patient? (y/n): ";
-                    cin >> addMore;
-                    cin.ignore();
-                    patientCount++;
-                }while ((addMore == 'y' || addMore == 'Y') && patientCount < 20);
-                break;
+                    string patName;
+                    char addMore = 'y';
+                    while ((addMore == 'y' || addMore == 'Y') && patientCount < 20)
+                    {
+                        cout << "Enter Patient Name: ";
+                        getline(cin, patName);
+                        patient[patientCount].setName(patName);
+                        cout << "Patient added successfully!" << endl;
+                        cout << "Do you want to add another Patient? (y/n): ";
+                        cin >> addMore;
+                        cin.ignore(); 
+                        patientCount++;
+                    }
+                    break;
+                }
+                default:
+                {
+                    cout << "Invalid choice!" << endl;
+                    break;
+                }
+                }
+               break;
             }
             case 3:
             {
@@ -191,7 +214,7 @@ int main()
                         docterCount--;
                         for(int k = 0; k < patientCount; ++k) 
                         {
-                            patient[k].DeleteDocter(docName); // Remove docter from all patients
+                            patient[k].DeleteDocter(docName); 
                         }
                         cout << "Docter deleted successfully!" << endl;
                         break;
@@ -205,6 +228,7 @@ int main()
             }
             case 7:
             {
+                saveData(patient, patientCount, docter, docterCount);
                 cout << "Exiting..." << endl;
                 break;
             }

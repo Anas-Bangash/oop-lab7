@@ -37,7 +37,10 @@ class Patient
     void addDocter(Docter* d);
     bool hasDocter(string search);
     int getDocterCount();
+    Docter** getDocters(); // Added getter for docters
     void DeleteDocter(string docName);
 };
+void saveData(Patient* patient, const int& patientCount, Docter* docter, const int& docterCount);
+void loadData(Patient* patient, Docter* docter);
 
 #endif
