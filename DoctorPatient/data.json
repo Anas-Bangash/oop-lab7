@@ -1,0 +1,20 @@
+{
+    "docterCount": 1,
+    "docters": [
+        {
+            "name": "Saad",
+            "patients": [
+                "Adeel"
+            ]
+        }
+    ],
+    "patientCount": 1,
+    "patients": [
+        {
+            "docters": [
+                "Saad"
+            ],
+            "name": "Adeel"
+        }
+    ]
+}

@@ -104,7 +104,7 @@ bool Patient::hasDocter(string search)
     }
     return false;
 }
-Docter** Patient::getDocter() 
+Docter** Patient::getDocters() 
 {
     return docters; 
 }
@@ -144,11 +144,11 @@ void saveData(Patient* patient, const int& patientCount, Docter* docter, const i
         {
             
             j["patients"][i]["name"] = patient[i].getName();
-            Docter** docters = patient[i].getDocter();
-            j["patients"][i]["docters"] = json::array();
-            for(int d=0; d < patient[i].getDocterCount(); d++)
+            if(patient[i].getDocterCount()!=0)
             {
-                if (docters[d]) // Check if the docter pointer is not null
+                Docter** docters = patient[i].getDocters();
+                j["patients"][i]["docters"] = json::array();
+                for(int d=0; d < patient[i].getDocterCount(); d++)
                 {
                     j["patients"][i]["docters"].push_back(docters[d]->getname());
                 }
@@ -158,21 +158,22 @@ void saveData(Patient* patient, const int& patientCount, Docter* docter, const i
         for(int i=0; i < docterCount; i++)
         {
             j["docters"][i]["name"] = docter[i].getname();
-            Patient** patients = docter[i].getPatients();
-            j["docters"][i]["patients"] = json::array();
-            for(int p=0; p < docter[i].getPatientCount(); p++)
+            if(docter[i].getPatientCount() != 0)
             {
-                if (patients[p]) // Check if the patient pointer is not null
-                {
+                Patient** patients = docter[i].getPatients();
+                j["docters"][i]["patients"] = json::array();
+                for(int p=0; p < docter[i].getPatientCount(); p++)
+                {   
                     j["docters"][i]["patients"].push_back(patients[p]->getName());
                 }
             }
         }
         outfile << j.dump(4); 
+        cout<<"Data saved successfully!"<<endl;
         outfile.close();
     }
 }
-void loadData(Patient* patient, Docter* docter)
+void loadData(Patient* patient,int& patientCount, Docter* docter, int& docterCount)
 {
     ifstream infile("data.json");
     json j;
@@ -184,49 +185,55 @@ void loadData(Patient* patient, Docter* docter)
     else
     {
         infile >> j;
-        int countPatients = j["patientCount"];
-        int countDocter = j["docterCount"];
-        for(int i=0; i<countPatients; i++)
+        patientCount = j["patientCount"];
+        docterCount = j["docterCount"];
+        for(int i=0; i<patientCount; i++)
         {
             patient[i].setName(j["patients"][i]["name"]);
         }
-        for(int i=0; i<countDocter; i++)
+        for(int i=0; i<docterCount; i++)
         {
             docter[i].setName(j["docters"][i]["name"]);
         }
-        for(int i=0; i<countPatients; i++)
+        for(int i=0; i<patientCount; i++)
         {
-            int assignedDoctorCount = j["patients"][i]["docters"].size();
-            for(int d=0; d < assignedDoctorCount; d++)
-            {             
-                string docName = j["patients"][i]["docters"][d];
-                for(int k = 0; k < countDocter; k++)
-                {
-                    if(docter[k].getname() == docName)
+            if(j["patients"][i].contains("docters"))
+            {
+                int assignedDoctorCount = j["patients"][i]["docters"].size();
+                for(int d=0; d < assignedDoctorCount; d++)
+                {             
+                    string docName = j["patients"][i]["docters"][d];
+                    for(int k = 0; k < docterCount; k++)
                     {
-                        patient[i].addDocter(&docter[k]);
-                        break;
+                        if(docter[k].getname() == docName)
+                        {
+                            patient[i].addDocter(&docter[k]);
+                            break;
+                        }
                     }
                 }
             }
         }  
-        for(int i=0; i<countDocter; i++)
+        for(int i=0; i<docterCount; i++)
         {
-            int assignedPatientCount = j["docters"][i]["patients"].size();
-            for(int p=0; p < assignedPatientCount; p++)
+            if(j["docters"][i].contains("patients"))
             {
-                string patName = j["docters"][i]["patients"][p];
-                for(int k = 0; k < countPatients; k++)
+                int assignedPatientCount = j["docters"][i]["patients"].size();
+                for(int p=0; p < assignedPatientCount; p++)
                 {
-                    if(patient[k].getName() == patName)
+                 string patName = j["docters"][i]["patients"][p];
+                    for(int k = 0; k < patientCount; k++)
                     {
-                        docter[i].addPatient(&patient[k]);
-                        break;
+                        if(patient[k].getName() == patName)
+                        {
+                            docter[i].addPatient(&patient[k]);
+                            break;
+                        }
                     }
                 }
             }
         }     
-        
+        cout<<"Data loaded successfully!"<<endl;
         infile.close();
     }
 }

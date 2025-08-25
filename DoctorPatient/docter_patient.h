@@ -41,6 +41,6 @@ class Patient
     void DeleteDocter(string docName);
 };
 void saveData(Patient* patient, const int& patientCount, Docter* docter, const int& docterCount);
-void loadData(Patient* patient, Docter* docter);
+void loadData(Patient* patient, int& patientCount, Docter* docter, int& docterCount);
 
 #endif
