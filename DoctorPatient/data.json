@@ -1,20 +1,58 @@
 {
-    "docterCount": 1,
+    "docterCount": 3,
     "docters": [
         {
             "name": "Saad",
             "patients": [
                 "Adeel"
             ]
+        },
+        {
+            "name": "Anas",
+            "patients": [
+                "Tanzeela",
+                "Balbala",
+                "Azmaray"
+            ]
+        },
+        {
+            "name": "Lawangeen",
+            "patients": [
+                "Balbala",
+                "Azmaray"
+            ]
         }
     ],
-    "patientCount": 1,
+    "patientCount": 5,
     "patients": [
         {
             "docters": [
                 "Saad"
             ],
             "name": "Adeel"
+        },
+        {
+            "docters": [
+                "Anas"
+            ],
+            "name": "Tanzeela"
+        },
+        {
+            "name": "Chinaar"
+        },
+        {
+            "docters": [
+                "Lawangeen",
+                "Anas"
+            ],
+            "name": "Azmaray"
+        },
+        {
+            "docters": [
+                "Anas",
+                "Lawangeen"
+            ],
+            "name": "Balbala"
         }
     ]
 }
